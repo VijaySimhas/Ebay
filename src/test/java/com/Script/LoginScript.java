@@ -15,15 +15,21 @@ public class LoginScript extends BaseClass {
 	// Unable to capture elements under SignIn Page
 	// product details not listiong in app displays no result found ,based on
 	// product searched: Ex:apple iphone 6
-	@Test
-	public void loginTest() {
+	@DataProvider(name="signInData")
+	public Object[][] readData() throws Exception {
+		String[][] retObjArr = datamanager.getTableArray(ConfigurationLibrary.xlpath_login, ConfigurationLibrary.xlsheet_login02, ConfigurationLibrary.xlDataTable_login);
+		return retObjArr;
+	}
+	
+	@Test(dataProvider = "signInData")
+ 	public void loginTest(String username,String password) {
 		login = new LoginPage(mobiledriver);
 		prdt = new ProductDetailsPage(mobiledriver);
 
 		login.hamburgMenu.click();
 		login.ebaySignInLogo.click();
-		login.Email.sendKeys("vijay@mail.com");
-		login.Password.sendKeys("xyz");
+		login.Email.sendKeys(username);
+		login.Password.sendKeys(password);
 		login.signInButton.click();
 		prdt.searchBox.click();
 		prdt.searchtext.sendKeys("apple iphone 6");
